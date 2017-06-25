@@ -12,7 +12,7 @@ Vcs-Browser: https://github.com/JBBgameich/hybris-usb-packaging
 
 Package: hybris-usb
 Architecture: all
-Depends: dropbear,
+Depends: isc-dhcp-server
          ${shlibs:Depends},
          ${misc:Depends}
 Description: USB control for Android with hybris
