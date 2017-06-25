@@ -1,0 +1,7 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: hybris-usb
+Source: http://github.com/mickybart/gnulinux_support
+
+Files: debian/*
+Copyright: 2017 JBBgameich <jbb.mail@gmx.de>
+License: WTFPL
