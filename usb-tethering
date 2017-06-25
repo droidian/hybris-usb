@@ -36,6 +36,7 @@ usb_setup() {
 
 usb_info() {
     write $ANDROID_USB/iSerial       "$1"
+    echo "$1" >> /var/log/usb_info.log
 }
 
 ip_setup() {
@@ -57,7 +58,14 @@ ip_setup() {
     usb_info "$USB_IMANUFACTURER on $USB_IFACE $LOCAL_IP"
 }
 
+dhcpd_start() {
+	INTERFACES="$USB_IFACE"
+	/usr/sbin/dhcpd -4 -q -cf /etc/hybris-usb/dhcpd.conf -pf /run/hybris-usb/dhcpd4.pid -lf /run/hybris-usb/dhcpd4.lease
+
+}
+
 usb_setup
 ip_setup
+dhcpd_start
 
 exit $?
