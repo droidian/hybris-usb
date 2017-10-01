@@ -4,10 +4,9 @@ export DESTDIR:='debian/hybris-usb'
 
 %:
 	dh $@
-	
+
 override_dh_auto_install:
 	# usb tethering
-	
 	install -d $(DESTDIR)/usr/bin
 	install -m 755 usb-tethering $(DESTDIR)/usr/bin/
 
@@ -15,11 +14,8 @@ override_dh_auto_install:
 	install -m 644 usb-tethering.service $(DESTDIR)/lib/systemd/system/
 
 	# dhcpd configuration
-
 	install -d $(DESTDIR)/usr/lib/tmpfiles.d/
 	install -m 644 tmpfiles.d.hybris-usb.conf $(DESTDIR)/usr/lib/tmpfiles.d/hybris-usb.conf
 
 	install -d $(DESTDIR)/etc/hybris-usb/
 	install -m 644 dhcpd.conf $(DESTDIR)/etc/hybris-usb/
-
-

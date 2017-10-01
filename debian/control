@@ -3,16 +3,14 @@ Section: net
 Priority: optional
 Maintainer: JBBgameich <jbb.mail@gmx.de>
 Build-Depends: debhelper (>= 9),
-               make,
-               coreutils,
-Standards-Version: 3.9.8
+Standards-Version: 4.1.0
 Homepage: https://github.com/mickybart/gnulinux_support
-Vcs-Git: https://github.com/JBBgameich/hybris-usb-packaging.git
-Vcs-Browser: https://github.com/JBBgameich/hybris-usb-packaging
+Vcs-Git: https://github.com/halium-packaging/hybris-usb-packaging.git
+Vcs-Browser: https://github.com/halium-packaging/hybris-usb-packaging
 
 Package: hybris-usb
 Architecture: all
-Depends: isc-dhcp-server
+Depends: isc-dhcp-server,
          ${shlibs:Depends},
          ${misc:Depends}
 Description: USB control for Android with hybris
