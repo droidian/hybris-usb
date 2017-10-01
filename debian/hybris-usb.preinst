@@ -18,13 +18,13 @@ set -e
 #
 
 case "$1" in
-    upgrade)
+    upgrade|install)
         dpkg-divert --add --package hybris-usb --rename \
         --divert /etc/default/isc-dhcp-server.orig \
         /etc/default/isc-dhcp-server
     ;;
 
-    abort-upgrade|abort-remove|abort-deconfigure)
+    abort-upgrade|abort-remove|abort-deconfigure|abort-install)
 
     ;;
 
