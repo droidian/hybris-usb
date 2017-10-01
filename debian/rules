@@ -19,9 +19,6 @@ override_dh_auto_install:
 	install -d $(DESTDIR)/usr/lib/tmpfiles.d/
 	install -m 644 tmpfiles.d.hybris-usb.conf $(DESTDIR)/usr/lib/tmpfiles.d/hybris-usb.conf
 
-	install -d $(DESTDIR)/etc/default/
-	install -m 644 isc-dhcp-server $(DESTDIR)/etc/default/
-
 	install -d $(DESTDIR)/etc/hybris-usb/
 	install -m 644 dhcpd.conf $(DESTDIR)/etc/hybris-usb/
 
