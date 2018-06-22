@@ -41,11 +41,11 @@ usb_info() {
 
 ip_setup() {
     if [ -n "$USB_IFACE" ]; then
-        ifconfig $USB_IFACE $LOCAL_IP
+        ifconfig $USB_IFACE $LOCAL_IP netmask 255.255.255.0
         return
     fi
     
-    ifconfig rndis0 $LOCAL_IP && USB_IFACE=rndis0
+    ifconfig rndis0 $LOCAL_IP netmask 255.255.255.0 && USB_IFACE=rndis0
     if [ -z "$USB_IFACE" ]; then
         ifconfig usb0 $LOCAL_IP && USB_IFACE=usb0
     fi
