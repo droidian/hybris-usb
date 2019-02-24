@@ -11,6 +11,7 @@ Vcs-Browser: https://github.com/halium-packaging/hybris-usb-packaging
 Package: hybris-usb
 Architecture: all
 Depends: isc-dhcp-server,
+         net-tools,
          ${shlibs:Depends},
          ${misc:Depends}
 Description: USB control for Android with hybris

@@ -111,7 +111,9 @@ ip_setup() {
 }
 
 dhcpd_start() {
-	dhcpd -f -4 -q -cf /etc/hybris-usb/dhcpd.conf -pf /run/hybris-usb/dhcpd4.pid -lf /run/hybris-usb/dhcpd4.lease
+    mkdir -p /run/hybris-usb
+    touch /run/hybris-usb/dhcpd4.lease
+    dhcpd -f -4 -q -cf /etc/hybris-usb/dhcpd.conf -pf /run/hybris-usb/dhcpd4.pid -lf /run/hybris-usb/dhcpd4.lease
 }
 
 usb_setup
