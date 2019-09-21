@@ -102,10 +102,12 @@ ip_setup() {
 
     if [ -z "$USB_IFACE" ]; then
         usb_info "could not setup USB tethering!"
+        systemd-notify --ready --status="could not setup USB tethering!"
         return 1
     fi
 
     usb_info "$USB_IMANUFACTURER on $USB_IFACE $LOCAL_IP"
+    systemd-notify --ready --status="$USB_IMANUFACTURER on $USB_IFACE $LOCAL_IP"
 }
 
 dhcpd_start() {

@@ -8,7 +8,7 @@ ConditionPathExists=|/sys/class/android_usb/android0
 ConditionPathExists=|/sys/kernel/config/usb_gadget
 
 [Service]
-Type=oneshot
+Type=notify
 ExecStart=/bin/bash /usr/bin/usb-tethering
 
 [Install]
