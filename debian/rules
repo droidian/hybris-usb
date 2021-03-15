@@ -17,5 +17,9 @@ override_dh_auto_install:
 	install -d $(DESTDIR)/etc/hybris-usb/
 	install -m 644 dhcpd.conf $(DESTDIR)/etc/hybris-usb/
 
+	# mask mobian-usb-gadget
+	install -d $(DESTDIR)/etc/systemd/system/
+	ln -s /dev/null $(DESTDIR)/etc/systemd/system/mobian-usb-gadget.service
+
 override_dh_installsystemd:
 	dh_installsystemd --name=usb-tethering
