@@ -6,7 +6,7 @@ USB_IDVENDOR=0FCE
 USB_IDPRODUCT=7169
 USB_IPRODUCT="Unknown"
 USB_ISERIAL="Unknown"
-USB_IMANUFACTURER="GNU/Linux Device"
+[ -f /etc/os-release ] && USB_IMANUFACTURER="$(awk -F'"' '$1 ~ /^PRETTY_NAME/ {print $2}' /etc/os-release) Device" || USB_IMANUFACTURER="GNU/Linux Device"
 USB_IFACE=""
 
 ####
@@ -19,6 +19,12 @@ ANDROID_USB=/sys/class/android_usb/android0
 USB_FUNCTIONS=rndis
 LOCAL_IP=10.15.19.82
 GADGET_DIR=/sys/kernel/config/usb_gadget
+
+if grep -q -i "EXYNOS" /proc/device-tree/model; then
+   IS_EXYNOS=true
+else
+   IS_EXYNOS=false
+fi
 
 write() {
     echo -n "$2" > "$1"
@@ -44,15 +50,33 @@ usb_setup_configfs() {
 
     mkdir $GADGET_DIR/g1/configs/c.1
     mkdir $GADGET_DIR/g1/configs/c.1/strings/0x409
-    write $GADGET_DIR/g1/configs/c.1/strings/0x409/configuration "$USB_FUNCTIONS"
+
+    if [ "$IS_EXYNOS" == "true" ]; then
+       write $GADGET_DIR/g1/configs/c.1/strings/0x409/configuration "Conf 1"
+       write $GADGET_DIR/g1/configs/c.1/MaxPower 0x3f
+    else
+       write $GADGET_DIR/g1/configs/c.1/strings/0x409/configuration "$USB_FUNCTIONS"
+    fi
 
     if echo $USB_FUNCTIONS | grep -q "rndis"; then
         ln -s $GADGET_DIR/g1/functions/rndis.usb0 $GADGET_DIR/g1/configs/c.1
         ln -s $GADGET_DIR/g1/functions/rndis_bam.rndis $GADGET_DIR/g1/configs/c.1
+        if [ "$IS_EXYNOS" == "true" ]; then
+           ln -s $GADGET_DIR/g1/functions/rndis.0 $GADGET_DIR/g1/configs/c.1/rndis.0
+        fi
     fi
     echo $USB_FUNCTIONS | grep -q "mass_storage" && ln -s $GADGET_DIR/g1/functions/storage.0 $GADGET_DIR/g1/configs/c.1
 
-    echo "$(ls /sys/class/udc)" > $GADGET_DIR/g1/UDC
+    if [ "$IS_EXYNOS" == "true" ]; then
+       write $ANDROID_USB/enable   0
+       write $GADGET_DIR/g1/idProduct 0x6863
+       write $GADGET_DIR/g1/idVendor 0x04E8
+       write $ANDROID_USB/functions        $USB_FUNCTIONS
+       echo "$(ls /sys/class/udc)" > $GADGET_DIR/g1/UDC
+       write $ANDROID_USB/enable   1
+    else
+       echo "$(ls /sys/class/udc)" > $GADGET_DIR/g1/UDC
+    fi
 }
 
 # This sets up the USB with whatever USB_FUNCTIONS are set to via android_usb
