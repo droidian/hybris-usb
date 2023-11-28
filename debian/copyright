@@ -4,7 +4,9 @@ Source: http://github.com/mickybart/gnulinux_support
 
 Files: *
 Copyright: 2016-2017, Michaël Serpieri <mickybart@pygoscelis.org>
+           2020-2023, Droidian Project <info@droidian.org>
 
 Files: debian/*
 Copyright: 2017 JBBgameich <jbb.mail@gmx.de>
+           2020-2023, Droidian Project <info@droidian.org>
 License: WTFPL

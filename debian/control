@@ -1,12 +1,12 @@
 Source: hybris-usb
 Section: net
 Priority: optional
-Maintainer: JBBgameich <jbb.mail@gmx.de>
-Build-Depends: debhelper (>= 9),
-Standards-Version: 4.1.0
+Maintainer: Bardia Moshiri <fakeshell@bardia.tech>
+Build-Depends: debhelper (>= 13),
+Standards-Version: 4.5.0
 Homepage: https://github.com/mickybart/gnulinux_support
-Vcs-Git: https://github.com/halium-packaging/hybris-usb-packaging.git
-Vcs-Browser: https://github.com/halium-packaging/hybris-usb-packaging
+Vcs-Git: https://github.com/droidian/hybris-usb.git
+Vcs-Browser: https://github.com/droidian/hybris-usb
 
 Package: hybris-usb
 Architecture: all
