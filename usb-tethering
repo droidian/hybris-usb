@@ -16,7 +16,8 @@ if [ -f /etc/default/hybris-device ]; then
 fi
 
 ANDROID_USB=/sys/class/android_usb/android0
-USB_FUNCTIONS=rndis
+#USB_FUNCTIONS=rndis
+USB_FUNCTIONS=ncm
 LOCAL_IP=10.15.19.82
 GADGET_DIR=/sys/kernel/config/usb_gadget
 
@@ -46,6 +47,11 @@ usb_setup_configfs() {
         mkdir $GADGET_DIR/g1/functions/rndis.usb0
         mkdir $GADGET_DIR/g1/functions/rndis_bam.rndis
     fi
+
+    if echo $USB_FUNCTIONS | grep -q "ncm"; then
+        mkdir $GADGET_DIR/g1/functions/ncm.usb0
+    fi
+
     echo $USB_FUNCTIONS | grep -q "mass_storage" && mkdir $GADGET_DIR/g1/functions/storage.0
 
     mkdir $GADGET_DIR/g1/configs/c.1
@@ -61,10 +67,16 @@ usb_setup_configfs() {
     if echo $USB_FUNCTIONS | grep -q "rndis"; then
         ln -s $GADGET_DIR/g1/functions/rndis.usb0 $GADGET_DIR/g1/configs/c.1
         ln -s $GADGET_DIR/g1/functions/rndis_bam.rndis $GADGET_DIR/g1/configs/c.1
+
         if [ "$IS_EXYNOS" == "true" ]; then
            ln -s $GADGET_DIR/g1/functions/rndis.0 $GADGET_DIR/g1/configs/c.1/rndis.0
         fi
     fi
+
+    if echo $USB_FUNCTIONS | grep -q "ncm"; then
+        ln -s $GADGET_DIR/g1/functions/ncm.usb0 $GADGET_DIR/g1/configs/c.1
+    fi
+
     echo $USB_FUNCTIONS | grep -q "mass_storage" && ln -s $GADGET_DIR/g1/functions/storage.0 $GADGET_DIR/g1/configs/c.1
 
     if [ "$IS_EXYNOS" == "true" ]; then
@@ -118,7 +130,7 @@ ip_setup() {
         ifconfig $USB_IFACE $LOCAL_IP netmask 255.255.255.0
         return
     fi
-    
+
     ifconfig rndis0 $LOCAL_IP netmask 255.255.255.0 && USB_IFACE=rndis0
     if [ -z "$USB_IFACE" ]; then
         ifconfig usb0 $LOCAL_IP && USB_IFACE=usb0
