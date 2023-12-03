@@ -32,6 +32,8 @@ write() {
 
 # This sets up the USB with whatever USB_FUNCTIONS are set to via configfs
 usb_setup_configfs() {
+    [ -f /sys/class/udc/"$(ls /sys/class/udc | grep -v dummy | head -1)"/device/../mode ] && write /sys/class/udc/"$(ls /sys/class/udc | grep -v dummy | head -1)"/device/../mode peripheral
+
     G_USB_ISERIAL=$GADGET_DIR/g1/strings/0x409/serialnumber
 
     mkdir $GADGET_DIR/g1
@@ -46,6 +48,7 @@ usb_setup_configfs() {
         mkdir $GADGET_DIR/g1/functions/rndis.usb0
         mkdir $GADGET_DIR/g1/functions/rndis_bam.rndis
     fi
+
     echo $USB_FUNCTIONS | grep -q "mass_storage" && mkdir $GADGET_DIR/g1/functions/storage.0
 
     mkdir $GADGET_DIR/g1/configs/c.1
@@ -61,10 +64,12 @@ usb_setup_configfs() {
     if echo $USB_FUNCTIONS | grep -q "rndis"; then
         ln -s $GADGET_DIR/g1/functions/rndis.usb0 $GADGET_DIR/g1/configs/c.1
         ln -s $GADGET_DIR/g1/functions/rndis_bam.rndis $GADGET_DIR/g1/configs/c.1
+
         if [ "$IS_EXYNOS" == "true" ]; then
            ln -s $GADGET_DIR/g1/functions/rndis.0 $GADGET_DIR/g1/configs/c.1/rndis.0
         fi
     fi
+
     echo $USB_FUNCTIONS | grep -q "mass_storage" && ln -s $GADGET_DIR/g1/functions/storage.0 $GADGET_DIR/g1/configs/c.1
 
     if [ "$IS_EXYNOS" == "true" ]; then
@@ -118,7 +123,7 @@ ip_setup() {
         ifconfig $USB_IFACE $LOCAL_IP netmask 255.255.255.0
         return
     fi
-    
+
     ifconfig rndis0 $LOCAL_IP netmask 255.255.255.0 && USB_IFACE=rndis0
     if [ -z "$USB_IFACE" ]; then
         ifconfig usb0 $LOCAL_IP && USB_IFACE=usb0
