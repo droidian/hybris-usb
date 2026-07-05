@@ -115,10 +115,13 @@ usb_setup_android_usb() {
 usb_setup() {
     mount -t configfs none /sys/kernel/config || true
 
-    if [ -d $ANDROID_USB ]; then
-        usb_setup_android_usb $1
-    elif [ -d $GADGET_DIR ]; then
-        usb_setup_configfs $1
+    if [ -f /sys/class/android_usb/android0/enable ]; then
+        usb_setup_android_usb "$1"
+    elif [ -d "$GADGET_DIR" ]; then
+        usb_setup_configfs "$1"
+    else
+        echo "No supported USB gadget method found (android_usb or configfs)!"
+        return 1
     fi
 }
 
