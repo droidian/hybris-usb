@@ -73,7 +73,7 @@ usb_setup_configfs() {
     fi
 
     if echo $USB_FUNCTIONS | grep -q "rndis"; then
-	ln -s $GADGET_DIR/g1/functions/$NETWORK_FUNCTION $GADGET_DIR/g1/configs/c.1
+	    ln -s $GADGET_DIR/g1/functions/$NETWORK_FUNCTION $GADGET_DIR/g1/configs/c.1
 
         if [ "$IS_EXYNOS" == "true" ]; then
            ln -s $GADGET_DIR/g1/functions/rndis.0 $GADGET_DIR/g1/configs/c.1/rndis.0
