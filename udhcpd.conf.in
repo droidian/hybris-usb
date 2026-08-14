@@ -1,0 +1,7 @@
+start 10.15.19.100
+end 10.15.19.254
+interface {USB_IFACE}
+option dns 8.8.8.8 8.8.4.4
+option subnet 255.255.255.0
+option lease 43200
+lease_file /run/hybris-usb/dhcpd4.lease
